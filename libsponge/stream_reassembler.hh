@@ -5,15 +5,29 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
 //! possibly overlapping) into an in-order byte stream.
+
+class Segment {
+  public:
+    std::string content;
+    size_t start_index; // the index of the start  of the seg
+    size_t end_index;
+
+    Segment();
+};
+
 class StreamReassembler {
   private:
     // Your code here -- add private members as necessary.
 
     ByteStream _output;  //!< The reassembled in-order byte stream
     size_t _capacity;    //!< The maximum number of bytes
+    size_t _head_index; // the index which could accept
+    bool _eof;
+    std::vector<Segment> _segments;
 
   public:
     //! \brief Construct a `StreamReassembler` that will store up to `capacity` bytes.
