@@ -20,6 +20,7 @@ Segment::Segment(): content(), start_index(0), end_index(0) {}
 //! possibly out-of-order, from the logical stream, and assembles any newly
 //! contiguous substrings and writes them into the output stream in order.
 void StreamReassembler::push_substring(const string &data, const size_t index, const bool eof) {
+    if(data.size() <= 0 && !eof) return;
     _eof = _eof || eof;
 
     // update end index

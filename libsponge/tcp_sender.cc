@@ -88,6 +88,7 @@ void TCPSender::fill_window() {
 void TCPSender::ack_received(const WrappingInt32 ackno, const uint16_t window_size) { 
     // remove outstanding seg
     uint64_t ack = unwrap(ackno, _isn, _ack);
+    if(ack > _next_seqno)return;
     while(_segments_not_ack.size() > 0) {
        TCPSegment cur_seg = _segments_not_ack.front();
        uint64_t need_ack = unwrap(cur_seg.header().seqno, _isn, _ack);        
