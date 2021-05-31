@@ -21,6 +21,15 @@ class TCPConnection {
     //! in case the remote TCPConnection doesn't know we've received its whole stream?
     bool _linger_after_streams_finish{true};
 
+  //! has received rst flag
+    bool _rst_received{false};
+
+    //! unclean shutdown
+    bool _unclean_shutdown{false};
+
+    //! clean shutdown
+    bool _clean_shutdown{false};
+
     size_t _time_since_last_segment_received{0};
 
   public:
@@ -69,6 +78,12 @@ class TCPConnection {
 
     //! Called periodically when time elapses
     void tick(const size_t ms_since_last_tick);
+
+    //! actually send data
+    void real_send();
+
+    //! check if connection has finished
+    void check_finish();
 
     //! \brief TCPSegments that the TCPConnection has enqueued for transmission.
     //! \note The owner or operating system will dequeue these and

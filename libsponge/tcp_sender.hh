@@ -112,6 +112,9 @@ class TCPSender {
     WrappingInt32 next_seqno() const { return wrap(_next_seqno, _isn); }
     //!@}
     void send_segment(const TCPSegment new_seg);
+
+    // if syn has sent
+    bool syn_sent();
 };
 
 #endif  // SPONGE_LIBSPONGE_TCP_SENDER_HH

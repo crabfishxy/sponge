@@ -156,3 +156,7 @@ void TCPSender::send_segment(TCPSegment new_seg) {
         _timer = _current_rto;
     }
 }
+
+bool TCPSender::syn_sent() {
+    return _next_seqno != uint64_t(0);
+}
