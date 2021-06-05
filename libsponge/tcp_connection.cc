@@ -23,6 +23,7 @@ size_t TCPConnection::time_since_last_segment_received() const { return _time_si
 void TCPConnection::segment_received(const TCPSegment &seg) { 
     _receiver.segment_received(seg);
     _time_since_last_segment_received = 0;
+    bool need_send_empty = false;
 
     // check rst
     if(seg.header().rst) {
@@ -39,8 +40,16 @@ void TCPConnection::segment_received(const TCPSegment &seg) {
     // reply
     if(seg.length_in_sequence_space() > 0) {
         _sender.fill_window();
-        real_send();
+        // nothing to send, send empty.
+        if(_sender.segments_out().empty()) {
+            need_send_empty = true;
+        }
     }
+    if(need_send_empty) {
+        _sender.send_empty_segment();
+    }
+
+    real_send();
     check_finish();
  }
 
